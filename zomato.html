@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zomato Clone | Aman Maurya</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #e23744;
+            color: white;
+            padding: 18px 5%;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            min-height: 390px;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+
+            background:
+                linear-gradient(#0008, #0008),
+                url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&auto=format&fit=crop&q=80")
+                center/cover no-repeat;
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 6vw, 60px);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        .search {
+            width: min(600px, 100%);
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            padding: 6px;
+        }
+
+        .search input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            outline: none;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .search button {
+            background: #e23744;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1200px, 92%);
+            margin: 45px auto;
+        }
+
+        .container h2 {
+            font-size: clamp(25px, 4vw, 32px);
+            margin-bottom: 25px;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .food-card {
+            border: 1px solid #eee;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px #0000000c;
+            transition: transform 0.25s, box-shadow 0.25s;
+            background: white;
+        }
+
+        .food-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 28px #00000016;
+        }
+
+        .food-card[hidden] {
+            display: none;
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+            background: #f2f2f2;
+        }
+
+        .food-info {
+            padding: 18px;
+        }
+
+        .food-info h3 {
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+        .food-info p {
+            color: #666;
+            margin-bottom: 12px;
+            min-height: 48px;
+        }
+
+        .food-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .order-btn {
+            background: #e23744;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .order-btn:hover,
+        .search button:hover {
+            background: #c92534;
+        }
+
+        #message {
+            margin-top: 22px;
+            color: #c92534;
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            color: #e23744;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 850px) {
+            .food-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .food-card img {
+                height: 190px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            header {
+                padding: 15px 4%;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            nav div:last-child {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            nav a {
+                margin-left: 0;
+                font-size: 14px;
+            }
+
+            .hero {
+                min-height: 340px;
+            }
+
+            .search button {
+                padding: 10px;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .food-card img {
+                height: 220px;
+            }
+
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">Yami Yami food </div>
+
+        <div>
+            <a href="#home">Home</a>
+            <a href="#food">Food</a>
+            <a href="#about">About</a>
+        </div>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <h1>Discover Great Food</h1>
+    <p>Find your favourite food in one place!</p>
+
+    <form class="search" id="searchForm">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search pizza, burger, biryani..."
+            aria-label="Search food">
+
+        <button type="submit">Search</button>
+    </form>
+</section>
+
+<section class="container" id="food">
+    <h2>Popular Food Items</h2>
+
+    <div class="food-grid" id="foodGrid">
+
+        <!-- 1. Pizza -->
+        <article class="food-card" data-name="pizza cheese italian">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=80"
+                 alt="Cheese Pizza" loading="lazy">
+            <div class="food-info">
+                <h3>Cheese Pizza</h3>
+                <p>Delicious pizza loaded with cheese.</p>
+                <div class="food-bottom">
+                    <span class="price">₹199</span>
+                    <button class="order-btn" data-food="Cheese Pizza" data-price="199">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 2. Burger -->
+        <article class="food-card" data-name="burger cheese fast food">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80"
+                 alt="Classic Burger" loading="lazy">
+            <div class="food-info">
+                <h3>Classic Burger</h3>
+                <p>Juicy burger with fresh vegetables.</p>
+                <div class="food-bottom">
+                    <span class="price">₹129</span>
+                    <button class="order-btn" data-food="Classic Burger" data-price="129">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 3. Biryani -->
+        <article class="food-card" data-name="biryani chicken rice indian">
+            <img src="https://images.unsplash.com/photo-1563379091339-03246963d96c?w=600&auto=format&fit=crop&q=80"
+                 alt="Biryani" loading="lazy">
+            <div class="food-info">
+                <h3>Chicken Biryani</h3>
+                <p>Flavourful rice with aromatic spices.</p>
+                <div class="food-bottom">
+                    <span class="price">₹229</span>
+                    <button class="order-btn" data-food="Chicken Biryani" data-price="229">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 4. Pasta -->
+        <article class="food-card" data-name="pasta italian white sauce">
+            <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=600&auto=format&fit=crop&q=80"
+                 alt="Pasta" loading="lazy">
+            <div class="food-info">
+                <h3>Creamy Pasta</h3>
+                <p>Creamy pasta with herbs and seasoning.</p>
+                <div class="food-bottom">
+                    <span class="price">₹179</span>
+                    <button class="order-btn" data-food="Creamy Pasta" data-price="179">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 5. French Fries -->
+        <article class="food-card" data-name="fries french potato snacks">
+            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&auto=format&fit=crop&q=80"
+                 alt="French Fries" loading="lazy">
+            <div class="food-info">
+                <h3>French Fries</h3>
+                <p>Crispy golden potato fries.</p>
+                <div class="food-bottom">
+                    <span class="price">₹99</span>
+                    <button class="order-btn" data-food="French Fries" data-price="99">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 6. Sushi -->
+        <article class="food-card" data-name="sushi japanese rice">
+            <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&auto=format&fit=crop&q=80"
+                 alt="Sushi" loading="lazy">
+            <div class="food-info">
+                <h3>Japanese Sushi</h3>
+                <p>A Japanese-style sushi platter.</p>
+                <div class="food-bottom">
+                    <span class="price">₹299</span>
+                    <button class="order-btn" data-food="Japanese Sushi" data-price="299">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 7. Salad -->
+        <article class="food-card" data-name="salad healthy vegetables green">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80"
+                 alt="Fresh Salad" loading="lazy">
+            <div class="food-info">
+                <h3>Fresh Salad</h3>
+                <p>Fresh vegetables with a light dressing.</p>
+                <div class="food-bottom">
+                    <span class="price">₹119</span>
+                    <button class="order-btn" data-food="Fresh Salad" data-price="119">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 8. Pancakes -->
+        <article class="food-card" data-name="pancake breakfast sweet">
+            <img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=600&auto=format&fit=crop&q=80"
+                 alt="Pancakes" loading="lazy">
+            <div class="food-info">
+                <h3>Sweet Pancakes</h3>
+                <p>Soft pancakes for a sweet breakfast.</p>
+                <div class="food-bottom">
+                    <span class="price">₹149</span>
+                    <button class="order-btn" data-food="Sweet Pancakes" data-price="149">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 9. Sandwich -->
+        <article class="food-card" data-name="sandwich cheese vegetable">
+            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=80"
+                 alt="Sandwich" loading="lazy">
+            <div class="food-info">
+                <h3>Veg Sandwich</h3>
+                <p>Fresh sandwich filled with vegetables.</p>
+                <div class="food-bottom">
+                    <span class="price">₹109</span>
+                    <button class="order-btn" data-food="Veg Sandwich" data-price="109">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 10. Donut -->
+        <article class="food-card" data-name="donut doughnut dessert sweet">
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&auto=format&fit=crop&q=80"
+                 alt="Donut" loading="lazy">
+            <div class="food-info">
+                <h3>Chocolate Donut</h3>
+                <p>Sweet treat with chocolate topping.</p>
+                <div class="food-bottom">
+                    <span class="price">₹89</span>
+                    <button class="order-btn" data-food="Chocolate Donut" data-price="89">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 11. Ice Cream -->
+        <article class="food-card" data-name="ice cream dessert vanilla">
+            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&auto=format&fit=crop&q=80"
+                 alt="Ice Cream" loading="lazy">
+            <div class="food-info">
+                <h3>Ice Cream</h3>
+                <p>A chilled and creamy dessert.</p>
+                <div class="food-bottom">
+                    <span class="price">₹79</span>
+                    <button class="order-btn" data-food="Ice Cream" data-price="79">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 12. Tacos -->
+        <article class="food-card" data-name="tacos mexican spicy">
+            <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=600&auto=format&fit=crop&q=80"
+                 alt="Tacos" loading="lazy">
+            <div class="food-info">
+                <h3>Mexican Tacos</h3>
+                <p>Tasty tacos with a spicy filling.</p>
+                <div class="food-bottom">
+                    <span class="price">₹189</span>
+                    <button class="order-btn" data-food="Mexican Tacos" data-price="189">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 13. Fried Chicken -->
+        <article class="food-card" data-name="chicken fried crispy">
+            <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&auto=format&fit=crop&q=80"
+                 alt="Fried Chicken" loading="lazy">
+            <div class="food-info">
+                <h3>Crispy Chicken</h3>
+                <p>Crispy fried chicken pieces.</p>
+                <div class="food-bottom">
+                    <span class="price">₹249</span>
+                    <button class="order-btn" data-food="Crispy Chicken" data-price="249">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 14. Cake -->
+        <article class="food-card" data-name="cake chocolate dessert birthday">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80"
+                 alt="Chocolate Cake" loading="lazy">
+            <div class="food-info">
+                <h3>Chocolate Cake</h3>
+                <p>Rich chocolate cake for dessert lovers.</p>
+                <div class="food-bottom">
+                    <span class="price">₹159</span>
+                    <button class="order-btn" data-food="Chocolate Cake" data-price="159">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 15. Noodles -->
+        <article class="food-card" data-name="noodles chinese spicy">
+            <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&auto=format&fit=crop&q=80"
+                 alt="Noodles" loading="lazy">
+            <div class="food-info">
+                <h3>Chinese Noodles</h3>
+                <p>Stir-fried noodles with vegetables.</p>
+                <div class="food-bottom">
+                    <span class="price">₹169</span>
+                    <button class="order-btn" data-food="Chinese Noodles" data-price="169">Order Now</button>
+                </div>
+            </div>
+        </article>
+
+    </div>
+
+    <p id="message" aria-live="polite"></p>
+
+    <a href="index.html" class="back">
+        ← Back to Aman Maurya Portfolio
+    </a>
+</section>
+
+<section class="container" id="about">
+    <h2>About This Project</h2>
+
+    <p>
+        This is a student-made food ordering website demo
+        created by Aman Maurya using HTML, CSS and JavaScript.
+        Search for food and explore the menu.
+        This is not the official Zomato website.
+    </p>
+</section>
+
+<footer>
+    <p>Student Project by Aman Maurya</p>
+    <p>Made with HTML, CSS and JavaScript</p>
+    <p>© <span id="year"></span> Aman Maurya</p>
+</footer>
+
+<script>
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const cards = document.querySelectorAll(".food-card");
+    const message = document.getElementById("message");
+
+    // Search food items
+    searchForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const query = searchInput.value.trim().toLowerCase();
+        let count = 0;
+
+        cards.forEach(function(card) {
+            const matches =
+                card.dataset.name.includes(query) ||
+                card.innerText.toLowerCase().includes(query);
+
+            card.hidden = !matches;
+
+            if (matches) {
+                count++;
+            }
+        });
+
+        message.textContent = count > 0
+            ? count + " food item(s) found."
+            : "No matching food found.";
+    });
+
+    // Open payment.html with selected food and price
+    document.querySelectorAll(".order-btn").forEach(function(button) {
+        button.addEventListener("click", function() {
+            const food = encodeURIComponent(button.dataset.food);
+            const price = encodeURIComponent(button.dataset.price);
+            window.location.href =
+                "payment.html?food=" + food + "&price=" + price;
+        });
+    });
+
+    // Current year
+    document.getElementById("year").textContent =
+        new Date().getFullYear();
+</script>
+
+</body>
+</html>

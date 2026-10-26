@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment | Zomato Clone</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f7f7f7;color:#292929;line-height:1.6}
+header{background:#e23744;color:#fff;padding:18px 5%;font-size:27px;font-weight:bold}
+main{width:min(760px,92%);margin:32px auto}
+.panel{background:#fff;border:1px solid #eee;border-radius:14px;padding:24px;margin-bottom:18px;box-shadow:0 5px 20px #0000000b}
+h1{font-size:27px;margin-bottom:6px}
+h2{font-size:20px;margin-bottom:14px}
+.muted{color:#666}
+.summary{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #eee}
+.summary:last-child{border-bottom:0;font-weight:bold;font-size:19px}
+.methods{display:grid;gap:12px}
+.method{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #ddd;border-radius:10px;cursor:pointer}
+.method:has(input:checked){border-color:#e23744;background:#fff7f7}
+.method input{accent-color:#e23744;width:18px;height:18px}
+.method strong{display:block}
+.method small{color:#666}
+label.field{display:block;margin:12px 0 6px;font-weight:bold}
+input[type=text]{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+.pay{width:100%;border:0;border-radius:8px;background:#e23744;color:#fff;font-size:17px;font-weight:bold;padding:14px;cursor:pointer;margin-top:18px}
+.pay:hover{background:#c92534}
+.note{background:#fff8e7;border-radius:8px;padding:12px;color:#6a521b;font-size:14px;margin-top:12px}
+.back{display:inline-block;color:#e23744;text-decoration:none;font-weight:bold;margin:4px 0 24px}
+#status{margin-top:14px;font-weight:bold}
+@media(max-width:520px){.panel{padding:18px}header{font-size:24px}}
+</style>
+</head>
+
+<body>
+<header>
+  zomato <span style="font-size:15px;font-weight:normal">| Secure Checkout Demo</span>
+</header>
+
+<main>
+<a class="back" href="javascript:history.back()">← Back to menu</a>
+
+<section class="panel">
+  <h1>Choose payment method</h1>
+  <p class="muted">Review your order and select a UPI option.</p>
+
+  <div class="summary">
+    <span>Food item</span>
+    <strong id="foodName">Not selected</strong>
+  </div>
+
+  <div class="summary">
+    <span>Amount</span>
+    <strong id="amount">₹0</strong>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Pay using UPI</h2>
+
+  <form id="paymentForm">
+    <div class="methods">
+      <label class="method">
+        <input type="radio" name="upi" value="Google Pay" checked>
+        <span>
+          <strong>Google Pay (GPay)</strong>
+          <small>Pay with your Google Pay UPI app</small>
+        </span>
+      </label>
+
+      <label class="method">
+        <input type="radio" name="upi" value="PhonePe">
+        <span>
+          <strong>PhonePe</strong>
+          <small>Pay with PhonePe</small>
+        </span>
+      </label>
+
+      <label class="method">
+        <input type="radio" name="upi" value="Paytm">
+        <span>
+          <strong>Paytm UPI</strong>
+          <small>Pay with Paytm</small>
+        </span>
+      </label>
+
+      <label class="method">
+        <input type="radio" name="upi" value="Other UPI">
+        <span>
+          <strong>Other UPI app</strong>
+          <small>BHIM or another supported UPI app</small>
+        </span>
+      </label>
+    </div>
+
+    <label class="field" for="upiId">
+      Optional: UPI ID (demo only)
+    </label>
+
+    <input type="text" id="upiId" placeholder="example@upi" autocomplete="off">
+
+    <button class="pay" type="submit">Continue to payment →</button>
+
+    <p id="status" aria-live="polite"></p>
+
+    <p class="note">
+      Demo only: no real payment will be collected or verified.
+      Never enter your UPI PIN on this website.
+    </p>
+  </form>
+</section>
+</main>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const food = params.get("food") || "Food order";
+const rawPrice = Number(params.get("price"));
+const price = Number.isFinite(rawPrice) && rawPrice >= 0 ? rawPrice : 0;
+
+document.getElementById("foodName").textContent = food;
+document.getElementById("amount").textContent = "₹" + price.toFixed(2);
+
+document.getElementById("paymentForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const method = document.querySelector('input[name="upi"]:checked').value;
+  const upiId = document.getElementById("upiId").value.trim();
+  const status = document.getElementById("status");
+
+  if (upiId && !/^[\w.-]+@[\w.-]+$/.test(upiId)) {
+    status.style.color = "#c92534";
+    status.textContent = "Please check the UPI ID format, or leave it blank.";
+    return;
+  }
+
+  // Opens the new website information page.
+  // This is a demo, not a real payment.
+  const nextPage = new URL("about-website.html", window.location.href);
+
+  nextPage.searchParams.set("food", food);
+  nextPage.searchParams.set("price", price.toFixed(2));
+  nextPage.searchParams.set("method", method);
+
+  window.location.href = nextPage.href;
+});
+</script>
+
+</body>
+</html>
